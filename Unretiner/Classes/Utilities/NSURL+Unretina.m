@@ -19,6 +19,13 @@ static NSString* const kHdString = @"-hd";
         // New path is the same file minus the @2x
         NSString* newFilename = [[self lastPathComponent] stringByReplacingOccurrencesOfString:@"@2x" withString:@""];
         newFilename = [newFilename stringByReplacingOccurrencesOfString:@"-hd" withString:@""];
+//        NSString *folderPath = [folder relativePath];
+//        
+//        if ([[folderPath substringFromIndex:folderPath.length-2] isEqualToString:@"/"])
+//        {
+//            folderPath = [folderPath substringFromIndex:folderPath.length-2];
+//        }
+//        NSString* newPath = [NSString stringWithFormat:@"%@/%@", [folder relativePath], newFilename];
         NSString* newPath = [NSString stringWithFormat:@"%@%@", [folder relativeString], newFilename];
         NSURL* newUrl = [NSURL URLWithString:newPath];
         

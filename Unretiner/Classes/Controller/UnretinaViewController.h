@@ -11,6 +11,7 @@
 @interface UnretinaViewController : NSViewController<NSOpenSavePanelDelegate, NSDroppableViewDelegate>
 
 @property (assign) IBOutlet NSButton* checkBox;
+@property (assign) IBOutlet NSButton* checkBoxNoQuestions;
 
 // Plus button handler
 - (IBAction)onSelectFolder:(id)sender;

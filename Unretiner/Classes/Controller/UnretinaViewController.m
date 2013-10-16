@@ -14,6 +14,7 @@ static NSString* const kRetinaString = @"@2x";
 static NSString* const kHdString = @"-hd";
 
 @synthesize checkBox;
+@synthesize checkBoxNoQuestions;
 
 #pragma mark - Initialisation
 
@@ -31,6 +32,7 @@ static NSString* const kHdString = @"-hd";
 
 - (void)dealloc {
     self.checkBox = nil;
+    self.checkBoxNoQuestions = nil;
     [super dealloc];
 }
 
@@ -38,19 +40,23 @@ static NSString* const kHdString = @"-hd";
 
 // Retrieves a folder to save to
 - (NSURL*)getSaveFolder:(NSURL*)url {
-    NSOpenPanel *panel = [NSOpenPanel openPanel]; 
-    [panel setCanChooseDirectories:YES]; 
-    [panel setCanChooseFiles:NO];
-    [panel setAllowsMultipleSelection:NO];
-    [panel setDirectoryURL:url];
-    panel.prompt = @"Export Here";
-    panel.title = @"Select folder to save converted files.";
-    if ([panel runModal] == NSOKButton) {
-        // Got it, return the URL
-        return [panel URL];
-    }
-    
-    return nil;
+    if (![checkBoxNoQuestions state]) {
+        NSOpenPanel *panel = [NSOpenPanel openPanel]; 
+        [panel setCanChooseDirectories:YES]; 
+        [panel setCanChooseFiles:NO];
+        [panel setAllowsMultipleSelection:NO];
+        [panel setDirectoryURL:url];
+        panel.prompt = @"Export Here";
+        panel.title = @"Select folder to save converted files.";
+        if ([panel runModal] == NSOKButton) {
+            // Got it, return the URL
+            return [panel URL];
+        }
+        
+        return nil;
+    } else {
+        return url;
+    }    
 }
 
 - (BOOL)isDirectory:(NSURL*)url {
@@ -129,13 +135,13 @@ static NSString* const kHdString = @"-hd";
 
 - (IBAction)onSelectFolder:(id)sender {  
     // Select the files to convert
-	NSOpenPanel *panel = [NSOpenPanel openPanel]; 
-	[panel setCanChooseDirectories:YES]; 
-	[panel setCanChooseFiles:YES];
-	[panel setAllowsMultipleSelection:YES];
-	[panel setDelegate:self];
-	[panel setCanCreateDirectories:YES];
-	panel.title = @"Select @2x or -hd retina files";
+    NSOpenPanel *panel = [NSOpenPanel openPanel]; 
+    [panel setCanChooseDirectories:YES]; 
+    [panel setCanChooseFiles:YES];
+    [panel setAllowsMultipleSelection:YES];
+    [panel setDelegate:self];
+    [panel setCanCreateDirectories:YES];
+    panel.title = @"Select @2x or -hd retina files";
     if ([panel runModal] == NSOKButton) {
         // Success, process all the files
         [self unretinaUrls:panel.URLs];
